@@ -92,4 +92,15 @@ public class TopicoService {
 
         return ResponseEntity.ok(new DadosDetalhamentoTopico(topico));
     }
+
+    public ResponseEntity excluir(Long id){
+        var topicoOptional = topicoRepository.findById(id);
+
+        if (topicoOptional.isPresent()) {
+            topicoRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.notFound().build();
+    }
 }

@@ -48,4 +48,10 @@ public class TopicoController {
     public ResponseEntity atualizar(@PathVariable Long id, @RequestBody @Valid DadosAtualizacaoTopico dados) {
         return service.atualizar(id, dados);
     }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity excluir(@PathVariable Long id) {
+        return service.excluir(id);
+    }
 }
