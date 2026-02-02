@@ -1,5 +1,6 @@
 package com.alura.forumhub.controller;
 
+import com.alura.forumhub.domain.topico.DadosAtualizacaoTopico;
 import com.alura.forumhub.domain.topico.DadosCadastroTopico;
 import com.alura.forumhub.domain.topico.DadosListagemTopico;
 import com.alura.forumhub.service.TopicoService;
@@ -35,5 +36,16 @@ public class TopicoController {
             @PageableDefault(size = 10, sort = "dataCriacao", direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable paginacao)
     {
         return service.listar(nomeCurso, ano, paginacao);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity detalhar(@PathVariable Long id) {
+        return service.detalhar(id);
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity atualizar(@PathVariable Long id, @RequestBody @Valid DadosAtualizacaoTopico dados) {
+        return service.atualizar(id, dados);
     }
 }

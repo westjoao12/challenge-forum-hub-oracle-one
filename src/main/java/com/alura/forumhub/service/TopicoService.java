@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDateTime;
@@ -65,5 +66,30 @@ public class TopicoService {
         }
 
         return ResponseEntity.ok(pagina.map(DadosListagemTopico::new));
+    }
+
+    public ResponseEntity detalhar(Long id){
+        var topico = topicoRepository.findById(id);
+
+        if (topico.isPresent())
+            return ResponseEntity.ok(new DadosDetalhamentoTopico(topico.get()));
+        return ResponseEntity.notFound().build();
+    }
+
+    public ResponseEntity atualizar(Long id, @RequestBody @Valid DadosAtualizacaoTopico dados){
+        var topicoOptional = topicoRepository.findById(id);
+
+        if (topicoOptional.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        var topico = topicoOptional.get();
+
+        // Regra de Negócio: Não permitir atualizar para um título/mensagem que já existe (duplicidade)
+        if (topicoRepository.existsByTituloAndMensagem(dados.titulo(), dados.mensagem()))
+            return ResponseEntity.badRequest().body("Já existe um tópico com este título e mensagem.");
+
+        topico.atualizarInformacoes(dados);
+
+        return ResponseEntity.ok(new DadosDetalhamentoTopico(topico));
     }
 }
