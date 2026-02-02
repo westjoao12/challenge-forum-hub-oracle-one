@@ -1,11 +1,29 @@
 package com.alura.forumhub.controller;
 
+import com.alura.forumhub.domain.resposta.DadosCadastroResposta;
+import com.alura.forumhub.service.RespostaService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/respostas")
 @Tag(name = "5. Respostas")
 public class RespostaController {
+
+    @Autowired
+    private RespostaService service;
+
+    @PostMapping
+    @Transactional
+    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroResposta dados, UriComponentsBuilder uriBuilder) {
+        return service.cadastrar(dados, uriBuilder);
+    }
 }
