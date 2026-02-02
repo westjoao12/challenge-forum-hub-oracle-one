@@ -13,7 +13,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
@@ -24,7 +23,7 @@ public class UsuarioService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroUsuario dados, UriComponentsBuilder uriBuilder, jakarta.servlet.http.HttpServletRequest request){
+    public ResponseEntity cadastrar(@Valid DadosCadastroUsuario dados, UriComponentsBuilder uriBuilder, jakarta.servlet.http.HttpServletRequest request){
         // Validação: E-mail duplicado
         if(repository.existsByEmail(dados.email())){
             var erro = new DadosErroDefault(
