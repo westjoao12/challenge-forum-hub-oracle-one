@@ -38,4 +38,12 @@ public class Topico {
     @JoinColumn(name = "curso_id")
     private Curso curso;
 
+    public Topico(DadosCadastroTopico dados, Usuario autor, Curso curso) {
+        this.titulo = dados.titulo();
+        this.mensagem = dados.mensagem();
+        this.dataCriacao = LocalDateTime.now();
+        this.status = StatusTopico.NAO_RESPONDIDO;
+        this.autor = autor;
+        this.curso = curso;
+    }
 }
