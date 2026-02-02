@@ -1,10 +1,14 @@
 package com.alura.forumhub.domain.resposta;
 
+import com.alura.forumhub.domain.topico.Topico;
+import com.alura.forumhub.domain.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Table(name = "respostas")
 @Entity(name = "Resposta")
@@ -18,4 +22,17 @@ public class Resposta {
     private Long id;
 
     private String mensagem;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "topico_id")
+    private Topico topico;
+
+    @Column(name = "data_criacao")
+    private LocalDateTime dataCriacao = LocalDateTime.now();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "autor_id")
+    private Usuario autor;
+
+    private Boolean solucao = false;
 }
