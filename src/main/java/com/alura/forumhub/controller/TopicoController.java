@@ -1,8 +1,8 @@
 package com.alura.forumhub.controller;
 
-import com.alura.forumhub.domain.topico.DadosAtualizacaoTopico;
-import com.alura.forumhub.domain.topico.DadosCadastroTopico;
-import com.alura.forumhub.domain.topico.DadosListagemTopico;
+import com.alura.forumhub.domain.topico.DadosAtualizacaoTopicoDTO;
+import com.alura.forumhub.domain.topico.DadosCadastroTopicoDTO;
+import com.alura.forumhub.domain.topico.DadosListagemTopicoDTO;
 import com.alura.forumhub.service.TopicoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
@@ -25,12 +25,12 @@ public class TopicoController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroTopico dados, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroTopicoDTO dados, UriComponentsBuilder uriBuilder) {
         return service.cadastrar(dados, uriBuilder);
     }
 
     @GetMapping
-    public ResponseEntity<Page<DadosListagemTopico>> listar(
+    public ResponseEntity<Page<DadosListagemTopicoDTO>> listar(
             @RequestParam(required = false) String nomeCurso,
             @RequestParam(required = false) Integer ano,
             @PageableDefault(size = 10, sort = "dataCriacao", direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable paginacao)
@@ -45,7 +45,7 @@ public class TopicoController {
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity atualizar(@PathVariable Long id, @RequestBody @Valid DadosAtualizacaoTopico dados) {
+    public ResponseEntity atualizar(@PathVariable Long id, @RequestBody @Valid DadosAtualizacaoTopicoDTO dados) {
         return service.atualizar(id, dados);
     }
 

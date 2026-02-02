@@ -1,6 +1,6 @@
 package com.alura.forumhub.controller;
 
-import com.alura.forumhub.domain.resposta.DadosCadastroResposta;
+import com.alura.forumhub.domain.resposta.DadosCadastroRespostaDTO;
 import com.alura.forumhub.service.RespostaService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
@@ -20,7 +20,7 @@ public class RespostaController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroResposta dados, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroRespostaDTO dados, UriComponentsBuilder uriBuilder) {
         return service.cadastrar(dados, uriBuilder);
     }
 

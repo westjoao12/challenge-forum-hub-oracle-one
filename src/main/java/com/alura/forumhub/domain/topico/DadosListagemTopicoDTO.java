@@ -2,7 +2,7 @@ package com.alura.forumhub.domain.topico;
 
 import java.time.LocalDateTime;
 
-public record DadosListagemTopico(
+public record DadosListagemTopicoDTO(
         Long id,
         String titulo,
         String message,
@@ -11,7 +11,7 @@ public record DadosListagemTopico(
         String autor,
         String curso
 ) {
-    public DadosListagemTopico(Topico topico) {
+    public DadosListagemTopicoDTO(Topico topico) {
         this(
                 topico.getId(),
                 topico.getTitulo(),

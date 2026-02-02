@@ -27,7 +27,7 @@ public class TopicoService {
     @Autowired
     private CursoRepository cursoRepository;
 
-    public ResponseEntity cadastrar(@Valid DadosCadastroTopico dados, UriComponentsBuilder uriBuilder){
+    public ResponseEntity cadastrar(@Valid DadosCadastroTopicoDTO dados, UriComponentsBuilder uriBuilder){
         // 1. Validação de Regra de Negócio: Duplicidade
         if(topicoRepository.existsByTituloAndMensagem(dados.titulo(), dados.mensagem()))
             return ResponseEntity.badRequest().body("Já Existe um tópico com este título e mensagem");
@@ -47,10 +47,10 @@ public class TopicoService {
         // 4. Retorna 201 Created e o DTO de detalhamento
         var uri = uriBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
 
-        return ResponseEntity.created(uri).body(new DadosDetalhamentoTopico(topico));
+        return ResponseEntity.created(uri).body(new DadosDetalhamentoTopicoDTO(topico));
     }
 
-    public ResponseEntity<Page<DadosListagemTopico>> listar(
+    public ResponseEntity<Page<DadosListagemTopicoDTO>> listar(
             String nomeCurso,
             Integer ano,
             @PageableDefault(size = 10, sort = "dataCriacao", direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable paginacao
@@ -65,18 +65,18 @@ public class TopicoService {
             pagina = topicoRepository.findAll(paginacao);
         }
 
-        return ResponseEntity.ok(pagina.map(DadosListagemTopico::new));
+        return ResponseEntity.ok(pagina.map(DadosListagemTopicoDTO::new));
     }
 
     public ResponseEntity detalhar(Long id){
         var topico = topicoRepository.findById(id);
 
         if (topico.isPresent())
-            return ResponseEntity.ok(new DadosDetalhamentoTopico(topico.get()));
+            return ResponseEntity.ok(new DadosDetalhamentoTopicoDTO(topico.get()));
         return ResponseEntity.notFound().build();
     }
 
-    public ResponseEntity atualizar(Long id, @RequestBody @Valid DadosAtualizacaoTopico dados){
+    public ResponseEntity atualizar(Long id, @RequestBody @Valid DadosAtualizacaoTopicoDTO dados){
         var topicoOptional = topicoRepository.findById(id);
 
         if (topicoOptional.isEmpty())
@@ -90,7 +90,7 @@ public class TopicoService {
 
         topico.atualizarInformacoes(dados);
 
-        return ResponseEntity.ok(new DadosDetalhamentoTopico(topico));
+        return ResponseEntity.ok(new DadosDetalhamentoTopicoDTO(topico));
     }
 
     public ResponseEntity excluir(Long id){

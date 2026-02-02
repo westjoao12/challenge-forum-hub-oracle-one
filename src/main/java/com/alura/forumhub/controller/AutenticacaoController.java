@@ -1,6 +1,6 @@
 package com.alura.forumhub.controller;
 
-import com.alura.forumhub.domain.usuario.DadosAutenticacao;
+import com.alura.forumhub.domain.usuario.DadosAutenticacaoDTO;
 import com.alura.forumhub.domain.usuario.Usuario;
 import com.alura.forumhub.infra.security.DadosTokenJWT;
 import com.alura.forumhub.infra.security.TokenService;
@@ -27,7 +27,7 @@ public class AutenticacaoController {
     private TokenService tokenService;
 
     @PostMapping
-    public ResponseEntity efetuarLogin(@RequestBody @Valid DadosAutenticacao dados) {
+    public ResponseEntity efetuarLogin(@RequestBody @Valid DadosAutenticacaoDTO dados) {
         var authenticationToken = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
         var authentication = manager.authenticate(authenticationToken);
 

@@ -1,7 +1,7 @@
 package com.alura.forumhub.controller;
 
-import com.alura.forumhub.domain.usuario.DadosCadastroUsuario;
-import com.alura.forumhub.domain.usuario.DadosListagemUsuario;
+import com.alura.forumhub.domain.usuario.DadosCadastroUsuarioDTO;
+import com.alura.forumhub.domain.usuario.DadosListagemUsuarioDTO;
 import com.alura.forumhub.service.UsuarioService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -24,12 +24,12 @@ public class UsuarioController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroUsuario dados, UriComponentsBuilder uriBuilder, jakarta.servlet.http.HttpServletRequest request) {
+    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroUsuarioDTO dados, UriComponentsBuilder uriBuilder, jakarta.servlet.http.HttpServletRequest request) {
         return service.cadastrar(dados, uriBuilder, request);
     }
 
     @GetMapping
-    public ResponseEntity<Page<DadosListagemUsuario>> listar(@PageableDefault(size = 10, sort = "nome") Pageable paginacao) {
+    public ResponseEntity<Page<DadosListagemUsuarioDTO>> listar(@PageableDefault(size = 10, sort = "nome") Pageable paginacao) {
         return service.listar(paginacao);
     }
 }

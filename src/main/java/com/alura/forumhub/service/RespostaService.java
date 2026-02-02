@@ -1,7 +1,7 @@
 package com.alura.forumhub.service;
 
-import com.alura.forumhub.domain.resposta.DadosCadastroResposta;
-import com.alura.forumhub.domain.resposta.DadosDetalhamentoResposta;
+import com.alura.forumhub.domain.resposta.DadosCadastroRespostaDTO;
+import com.alura.forumhub.domain.resposta.DadosDetalhamentoRespostaDTO;
 import com.alura.forumhub.domain.resposta.Resposta;
 import com.alura.forumhub.domain.topico.StatusTopico;
 import com.alura.forumhub.domain.usuario.Usuario;
@@ -28,7 +28,7 @@ public class RespostaService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public ResponseEntity cadastrar(@Valid DadosCadastroResposta dados, UriComponentsBuilder uriBuilder){
+    public ResponseEntity cadastrar(@Valid DadosCadastroRespostaDTO dados, UriComponentsBuilder uriBuilder){
         var topico = topicoRepository.findById(dados.idTopico())
                 .orElseThrow(() -> new RuntimeException("Tópico não encontrado"));
         var autor = usuarioRepository.findById(dados.idAutor())
@@ -38,7 +38,7 @@ public class RespostaService {
         repository.save(resposta);
 
         var uri = uriBuilder.path("/respostas/{id}").buildAndExpand(resposta.getId()).toUri();
-        return ResponseEntity.created(uri).body(new DadosDetalhamentoResposta(resposta));
+        return ResponseEntity.created(uri).body(new DadosDetalhamentoRespostaDTO(resposta));
     }
 
     public ResponseEntity marcarSolucao(Long id){
@@ -70,6 +70,6 @@ public class RespostaService {
 
         resposta.marcarComoSolucao();
 
-        return ResponseEntity.ok(new DadosDetalhamentoResposta(resposta));
+        return ResponseEntity.ok(new DadosDetalhamentoRespostaDTO(resposta));
     }
 }

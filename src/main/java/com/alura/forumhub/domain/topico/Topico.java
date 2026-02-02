@@ -38,7 +38,7 @@ public class Topico {
     @JoinColumn(name = "curso_id")
     private Curso curso;
 
-    public Topico(DadosCadastroTopico dados, Usuario autor, Curso curso) {
+    public Topico(DadosCadastroTopicoDTO dados, Usuario autor, Curso curso) {
         this.titulo = dados.titulo();
         this.mensagem = dados.mensagem();
         this.dataCriacao = LocalDateTime.now();
@@ -47,7 +47,7 @@ public class Topico {
         this.curso = curso;
     }
 
-    public void atualizarInformacoes(DadosAtualizacaoTopico dados) {
+    public void atualizarInformacoes(DadosAtualizacaoTopicoDTO dados) {
         if (dados.titulo() != null) {
             this.titulo = dados.titulo();
         }

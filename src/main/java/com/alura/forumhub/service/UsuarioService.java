@@ -1,7 +1,7 @@
 package com.alura.forumhub.service;
 
-import com.alura.forumhub.domain.usuario.DadosCadastroUsuario;
-import com.alura.forumhub.domain.usuario.DadosListagemUsuario;
+import com.alura.forumhub.domain.usuario.DadosCadastroUsuarioDTO;
+import com.alura.forumhub.domain.usuario.DadosListagemUsuarioDTO;
 import com.alura.forumhub.domain.usuario.Usuario;
 import com.alura.forumhub.infra.exception.DadosErroDefault;
 import com.alura.forumhub.repositories.UsuarioRepository;
@@ -23,7 +23,7 @@ public class UsuarioService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public ResponseEntity cadastrar(@Valid DadosCadastroUsuario dados, UriComponentsBuilder uriBuilder, jakarta.servlet.http.HttpServletRequest request){
+    public ResponseEntity cadastrar(@Valid DadosCadastroUsuarioDTO dados, UriComponentsBuilder uriBuilder, jakarta.servlet.http.HttpServletRequest request){
         // Validação: E-mail duplicado
         if(repository.existsByEmail(dados.email())){
             var erro = new DadosErroDefault(
@@ -41,11 +41,11 @@ public class UsuarioService {
         repository.save(usuario);
 
         var uri = uriBuilder.path("usuarios/{id}").buildAndExpand(usuario.getId()).toUri();
-        return ResponseEntity.created(uri).body(new DadosListagemUsuario(usuario));
+        return ResponseEntity.created(uri).body(new DadosListagemUsuarioDTO(usuario));
     }
 
-    public ResponseEntity<Page<DadosListagemUsuario>> listar(@PageableDefault(size = 10, sort = "nome") Pageable paginacao){
-        var pagina = repository.findAll(paginacao).map(DadosListagemUsuario::new);
+    public ResponseEntity<Page<DadosListagemUsuarioDTO>> listar(@PageableDefault(size = 10, sort = "nome") Pageable paginacao){
+        var pagina = repository.findAll(paginacao).map(DadosListagemUsuarioDTO::new);
         return ResponseEntity.ok(pagina);
     }
 }
