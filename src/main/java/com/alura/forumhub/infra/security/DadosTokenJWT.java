@@ -1,4 +1,4 @@
-package com.alura.forumhub.domain.usuario;
+package com.alura.forumhub.infra.security;
 
 public record DadosTokenJWT(String token) {
 }
