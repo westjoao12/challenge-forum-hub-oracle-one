@@ -1,6 +1,6 @@
 package com.alura.forumhub.repositories;
 
-import com.alura.forumhub.domain.Curso;
+import com.alura.forumhub.domain.curso.Curso;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
