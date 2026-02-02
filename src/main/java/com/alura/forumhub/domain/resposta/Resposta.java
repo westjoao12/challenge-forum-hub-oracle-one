@@ -35,4 +35,12 @@ public class Resposta {
     private Usuario autor;
 
     private Boolean solucao = false;
+
+    public Resposta(DadosCadastroResposta dados, Topico topico, Usuario autor) {
+        this.mensagem = dados.mensagem();
+        this.topico = topico;
+        this.autor = autor;
+        this.dataCriacao = LocalDateTime.now();
+        this.solucao = false;
+    }
 }
