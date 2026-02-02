@@ -24,4 +24,7 @@ public class Topico {
 
     @Column(name = "data_criacao")
     private LocalDateTime dataCriacao = LocalDateTime.now();
+
+    @Enumerated(EnumType.STRING)
+    private StatusTopico status = StatusTopico.NAO_RESPONDIDO;
 }
