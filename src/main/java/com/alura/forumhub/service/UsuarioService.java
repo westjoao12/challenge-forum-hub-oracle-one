@@ -7,6 +7,9 @@ import com.alura.forumhub.infra.exception.DadosErroDefault;
 import com.alura.forumhub.repositories.UsuarioRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -40,5 +43,10 @@ public class UsuarioService {
 
         var uri = uriBuilder.path("usuarios/{id}").buildAndExpand(usuario.getId()).toUri();
         return ResponseEntity.created(uri).body(new DadosListagemUsuario(usuario));
+    }
+
+    public ResponseEntity<Page<DadosListagemUsuario>> listar(@PageableDefault(size = 10, sort = "nome") Pageable paginacao){
+        var pagina = repository.findAll(paginacao).map(DadosListagemUsuario::new);
+        return ResponseEntity.ok(pagina);
     }
 }
