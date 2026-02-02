@@ -1,16 +1,17 @@
 package com.alura.forumhub.controller;
 
 import com.alura.forumhub.domain.topico.DadosCadastroTopico;
+import com.alura.forumhub.domain.topico.DadosListagemTopico;
 import com.alura.forumhub.service.TopicoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -25,5 +26,14 @@ public class TopicoController {
     @Transactional
     public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroTopico dados, UriComponentsBuilder uriBuilder) {
         return service.cadastrar(dados, uriBuilder);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<DadosListagemTopico>> listar(
+            @RequestParam(required = false) String nomeCurso,
+            @RequestParam(required = false) Integer ano,
+            @PageableDefault(size = 10, sort = "dataCriacao", direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable paginacao)
+    {
+        return service.listar(nomeCurso, ano, paginacao);
     }
 }
