@@ -55,4 +55,8 @@ public class Topico {
             this.mensagem = dados.mensagem();
         }
     }
+
+    public void marcarComoSolucionado() {
+        this.status = StatusTopico.SOLUCIONADO;
+    }
 }
