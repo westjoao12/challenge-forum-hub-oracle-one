@@ -159,8 +159,8 @@ The application will start on `http://localhost:8080` (or your configured port).
 
 Once the application is running, access the interactive API documentation:
 
-- **Swagger UI**: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
-- **OpenAPI JSON**: [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
+- **Swagger UI**: [http://localhost:8080/swagger-ui.html](http://localhost:8080/api/swagger-ui/index.html)
+- **OpenAPI JSON**: [http://localhost:8080/v3/api-docs](http://localhost:8080/api/v3/api-docs)
 
 ## 🔐 Authentication
 
@@ -187,7 +187,7 @@ JWT tokens include:
 
 ### Token Expiration
 
-Default token expiration is 24 hours (configurable via `JWT_EXPIRATION`).
+Default token expiration is 2 hours (configurable via `JWT_EXPIRATION`).
 
 ## 📡 API Endpoints
 
@@ -195,89 +195,86 @@ Default token expiration is 24 hours (configurable via `JWT_EXPIRATION`).
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/auth/register` | Register new user |
-| POST | `/auth/login` | Login and get JWT token |
-| POST | `/auth/refresh` | Refresh JWT token |
+| POST | `/usuarios` | Register new user |
+| POST | `/login` | Login and get JWT token |
 
 ### Topics Endpoints
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/topics` | List all topics (paginated) |
-| GET | `/topics/{id}` | Get specific topic |
-| POST | `/topics` | Create new topic |
-| PUT | `/topics/{id}` | Update topic |
-| DELETE | `/topics/{id}` | Delete topic |
+| GET | `/topicos` | List all topics (paginated) |
+| GET | `/topicos/{id}` | Get specific topic |
+| POST | `/topicos` | Create new topic |
+| PUT | `/topicos/{id}` | Update topic |
+| DELETE | `/topicos/{id}` | Delete topic |
 
 ### Responses Endpoints
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/topics/{topicId}/responses` | List responses for topic |
-| GET | `/responses/{id}` | Get specific response |
-| POST | `/responses` | Create new response |
-| PUT | `/responses/{id}` | Update response |
-| DELETE | `/responses/{id}` | Delete response |
+| GET | `/topicos/{topicId}/respostas` | List responses for topic |
+| GET | `/respostas/{id}` | Get specific response |
+| POST | `/respostas` | Create new response |
+| PUT | `/respostas/{id}` | Update response |
+| DELETE | `/respostas/{id}` | Delete response |
 
 ## 💡 Usage Examples
 
 ### 1. Register User
 
 ```bash
-curl -X POST http://localhost:8080/api/auth/register \
+curl -X POST http://localhost:8080/api/usuarios \
   -H "Content-Type: application/json" \
-  -d '{"username": "john_doe", "email": "john@example.com", "password": "SecurePassword123!"}'
+  -d '{"nome": "westjoao", "email": "westjoao@example.com", "senha": "SecurePassword123!"}'
 ```
 
 ### 2. Login
 
 ```bash
-curl -X POST http://localhost:8080/api/auth/login \
+curl -X POST http://localhost:8080/api/login \
   -H "Content-Type: application/json" \
-  -d '{"username": "john_doe", "password": "SecurePassword123!"}'
+  -d '{"email": "westjoao@gmail.com", "senha": "SecurePassword123!"}'
 ```
 
 Response:
 ```json
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "type": "Bearer",
-  "expiresIn": 86400000
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 }
 ```
 
 ### 3. Create Topic
 
 ```bash
-curl -X POST http://localhost:8080/api/topics \
+curl -X POST http://localhost:8080/api/topicos \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
-  -d '{"title": "How to Learn Java?", "description": "I want to learn Java programming from scratch", "course": "Java Programming"}'
+  -d '{"titulo": "How to Learn Java?", "mensagem": "I want to learn Java programming from scratch", "idAutor": "1", "idCurso": "1"}'
 ```
 
 ### 4. List Topics
 
 ```bash
-curl -X GET "http://localhost:8080/api/topics?page=0&size=10" \
+curl -X GET "http://localhost:8080/api/topicos?page=0&size=10" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
 
 ### 5. Create Response
 
 ```bash
-curl -X POST http://localhost:8080/api/responses \
+curl -X POST http://localhost:8080/api/respostas \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
-  -d '{"message": "Start with the basics of OOP and practice daily", "topicId": 1}'
+  -d '{"message": "Start with the basics of OOP and practice daily", "topicId": 1, "idAutor": "1"}'
 ```
 
 ### 6. Update Topic
 
 ```bash
-curl -X PUT http://localhost:8080/api/topics/1 \
+curl -X PUT http://localhost:8080/api/topicos/1 \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
-  -d '{"title": "How to Learn Java Effectively?", "description": "Updated description"}'
+  -d '{"titulo": "How to Learn Java Effectively?", "mensagem": "Updated description"}'
 ```
 
 ### 7. Delete Topic
@@ -295,14 +292,14 @@ challenge-forum-hub-oracle-one/
 │   ├── main/
 │   │   ├── java/
 │   │   │   └── com/forumhub/
-│   │   │       ├── config/           # Spring configuration classes
 │   │   │       ├── controller/       # REST controllers
 │   │   │       ├── service/          # Business logic
-│   │   │       ├── repository/       # Database access layer
-│   │   │       ├── entity/           # JPA entities
-│   │   │       ├── dto/              # Data Transfer Objects
-│   │   │       ├── security/         # JWT and security config
-│   │   │       ├── exception/        # Custom exceptions
+│   │   │       ├── repositores/      # Database access layer
+│   │   │       ├── domain/           # JPA entities
+│   │   │       ├── infra/            # JWT and security config
+|   |   |       |   └── exception/    # Custom exceptions
+|   |   |       |   └── security/     # JWT and security config
+|   |   |       |   └── springdoc/    # Spring Documentation
 │   │   │       └── ForumHubApplication.java  # Main entry point
 │   │   └── resources/
 │   │       ├── application.properties    # Configuration
@@ -441,7 +438,7 @@ This project is open source and available under the MIT License. See the LICENSE
 
 ## 👤 Author
 
-**João Oliveira**
+**João Afonso Fukiau** code name **West João**
 - GitHub: [@westjoao12](https://github.com/westjoao12)
 - Project: [Forum Hub - REST API](https://github.com/westjoao12/challenge-forum-hub-oracle-one)
 
@@ -453,4 +450,4 @@ This project is open source and available under the MIT License. See the LICENSE
 
 ---
 
-Made with ❤️ by João Oliveira
+Made with ❤️ by West João
